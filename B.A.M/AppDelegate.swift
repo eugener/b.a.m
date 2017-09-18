@@ -15,14 +15,13 @@ import IOKit.ps
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate  {
 
     var item : NSStatusItem? = nil
-    
-    
-    
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         // Insert code here to initialize your application
-        
-        NSUserNotificationCenter.default.delegate = self // allow for notifications to show even if your app is visible
+
+        // allow for notifications to show even if your app is visible/top
+        NSUserNotificationCenter.default.delegate = self
         
         //setup status bar and menu
         item = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
@@ -30,21 +29,33 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         let menu = NSMenu()
         menu.addItem(
-            NSMenuItem(title: "Check", action: #selector(AppDelegate.check), keyEquivalent: "")
+           withTitle: "Check",
+           action: #selector(AppDelegate.check),
+           keyEquivalent: ""
         )
         menu.addItem(
-            NSMenuItem(title: "Preferences...", action: #selector(AppDelegate.preferences), keyEquivalent: "")
+           withTitle: "Preferences...",
+           action: #selector(AppDelegate.preferences),
+           keyEquivalent: ""
         )
 
-        menu.addItem( NSMenuItem.separator())
+        menu.addItem( NSMenuItem.separator() )
+
         menu.addItem(
-            NSMenuItem(title: "Quit", action: #selector(AppDelegate.quit), keyEquivalent: "")
+           withTitle: "Quit",
+           action: #selector(AppDelegate.quit),
+           keyEquivalent: ""
         )
         item?.menu = menu
         
         
         // configure test timer
-        Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(AppDelegate.checkStatus), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(
+                timeInterval: 60.0,
+                target: self,
+                selector: #selector(AppDelegate.checkStatus),
+                userInfo: nil,
+                repeats: true)
         
         
     }
@@ -59,7 +70,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     }
     
     func checkStatus() {
-        showPowerNotification(info: checkPower(), forced: false)
+        showPowerNotification(info: getPowerStatus(), forced: false)
     }
     
     private func scheduleLocalNotification( title: String, subtitle: String, infoText: String) {
@@ -90,12 +101,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     }
     
     func check() {
-        showPowerNotification(info: checkPower(), forced: true)
+        showPowerNotification(info: getPowerStatus(), forced: true)
     }
+
+    private let minPowerCapacity = 25
     
-    func showPowerNotification( info: PowerInfo, forced: Bool) {
+    func showPowerNotification(info: PowerStatus, forced: Bool) {
         
-        if ( info.capacity <= 25 && !info.charging ) {
+        if ( info.capacity <= minPowerCapacity && !info.charging ) {
             scheduleLocalNotification(
                 title: "B.A.M",
                 subtitle: "Your power is critical: \(info.capacity)%",
@@ -112,34 +125,38 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         }
     }
     
-    func checkPower() -> PowerInfo {
+    func getPowerStatus() -> PowerStatus {
     
         let blob = IOPSCopyPowerSourcesInfo().takeRetainedValue()
         let sources = IOPSCopyPowerSourcesList(blob).takeRetainedValue() as Array
+
         for ps in sources {
             let info: [String: Any] = IOPSGetPowerSourceDescription(blob, ps).takeUnretainedValue() as! Dictionary
             print(info)
             
-            return PowerInfo(
+            return PowerStatus(
                 capacity: info[kIOPSCurrentCapacityKey] as! Int,
                 charging: info[kIOPSIsChargingKey] as! Bool
             )
         }
         
-        return PowerInfo(capacity: 100, charging: true);
+        return PowerStatus(capacity: 100, charging: true);
         
     }
 
     
-    class PowerInfo {
-        var capacity: Int
-        var charging: Bool
-        
-        init( capacity: Int, charging: Bool ) {
-            self.capacity = capacity
-            self.charging = charging
-        }
-    }
 
+
+}
+
+class PowerStatus {
+
+    var capacity: Int
+    var charging: Bool
+
+    init( capacity: Int, charging: Bool ) {
+        self.capacity = capacity
+        self.charging = charging
+    }
 }
 
