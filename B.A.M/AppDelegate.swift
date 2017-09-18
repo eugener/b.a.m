@@ -85,7 +85,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
             scheduleLocalNotification(
                 title: "B.A.M",
                 subtitle: "Your power is critical: \(info.capacity)%",
-                infoText: "Please connect your cord or risk losing everything"
+                infoText: "Please connect your cord or risk losing everything."
             )
         } else {
             if ( forced ) {
