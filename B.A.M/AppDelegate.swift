@@ -30,8 +30,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         let menu = NSMenu()
         menu.addItem(
-            NSMenuItem(title: "Check", action: #selector(AppDelegate.preferences), keyEquivalent: "")
+            NSMenuItem(title: "Check", action: #selector(AppDelegate.check), keyEquivalent: "")
         )
+        menu.addItem(
+            NSMenuItem(title: "Preferences...", action: #selector(AppDelegate.preferences), keyEquivalent: "")
+        )
+
         menu.addItem( NSMenuItem.separator())
         menu.addItem(
             NSMenuItem(title: "Quit", action: #selector(AppDelegate.quit), keyEquivalent: "")
@@ -76,6 +80,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     }
     
     func preferences() {
+        let storyboard = NSStoryboard(name: "Main", bundle:nil)
+        let prefController = storyboard.instantiateController(withIdentifier: "Preferences") as! NSWindowController
+        let prefWindow = prefController.window
+        let application = NSApplication.shared()
+        application.runModal(for: prefWindow!)
+        prefWindow?.close()
+        application.stopModal()
+    }
+    
+    func check() {
         showPowerNotification(info: checkPower(), forced: true)
     }
     

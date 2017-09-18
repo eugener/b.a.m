@@ -12,7 +12,6 @@ class ViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
         // Do any additional setup after loading the view.
     }
@@ -21,6 +20,11 @@ class ViewController: NSViewController {
         didSet {
         // Update the view, if already loaded.
         }
+    }
+    
+    override func viewDidDisappear() {
+        let application = NSApplication.shared()
+        application.stopModal()
     }
 
 
