@@ -11,12 +11,14 @@ import Foundation
 struct Config {
     
     private static let sMaxBatteryCapacity = "maxBatteryCapacity"
+    private static let defaultMaxBatteryCapacity: Int = 25
     
     private init() { }
     
     static var maxBatteryCapacity: Int {
         get {
-            return UserDefaults.standard.integer(forKey: sMaxBatteryCapacity)
+            let capacity = UserDefaults.standard.integer(forKey: sMaxBatteryCapacity)
+            return (capacity == 0) ? defaultMaxBatteryCapacity: capacity
         }
         set {
             UserDefaults.standard.set(newValue, forKey: sMaxBatteryCapacity)

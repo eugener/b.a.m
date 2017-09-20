@@ -25,10 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         // Insert code here to initialize your application
         
-        let capacity: Int = Config.maxBatteryCapacity
-            //UserDefaults.standard.integer(forKey: "maxBatteryCapacity")
-        //print("Loaded: \(capacity)")
-        viewController.maxBatteryCapacity = (capacity == 0) ? 25: capacity
+        // Retrieve configured max batterry capacity
+        viewController.maxBatteryCapacity = Config.maxBatteryCapacity
 
         // allow for notifications to show even if your app is visible/top
         NSUserNotificationCenter.default.delegate = self
@@ -152,9 +150,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         return PowerStatus(capacity: 100, charging: true);
         
     }
-
-    
-
 
 }
 
