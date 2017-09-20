@@ -14,7 +14,7 @@ import IOKit.ps
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate  {
 
-    lazy var item : NSStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    lazy var statusMenuItem : NSStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     lazy var storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle:nil)
     lazy var prefController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "Preferences")) as! NSWindowController
@@ -43,14 +43,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         menu.addItem( NSMenuItem.separator() )
         
-        menu.addItem(
+        let pitem = menu.addItem(
            withTitle: "Preferences...",
            action: nil, //#selector(AppDelegate.preferences),
            keyEquivalent: ""
         )
-        
-        let pitem = menu.item(withTitle: "Preferences...")
-        pitem?.view = viewController.view
+        pitem.view = viewController.view
 
         menu.addItem( NSMenuItem.separator() )
 
@@ -59,14 +57,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
            action: #selector(AppDelegate.quit),
            keyEquivalent: ""
         )
-        item.menu = menu
+        
+        statusMenuItem.menu = menu
         
         
-        // configure test timer
+        // configure battery check timer
         Timer.scheduledTimer(
                 timeInterval: 60.0,
                 target: self,
-                selector: #selector(AppDelegate.checkStatus),
+                selector: #selector(AppDelegate.checkBatteryStatus),
                 userInfo: nil,
                 repeats: true)
         
@@ -82,7 +81,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         return true
     }
     
-    @objc func checkStatus() {
+    @objc func checkBatteryStatus() {
         showPowerNotification(info: getPowerStatus(), forced: false)
     }
     
