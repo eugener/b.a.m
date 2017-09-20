@@ -40,11 +40,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
            action: #selector(AppDelegate.check),
            keyEquivalent: ""
         )
+        
+        menu.addItem( NSMenuItem.separator() )
+        
         menu.addItem(
            withTitle: "Preferences...",
-           action: #selector(AppDelegate.preferences),
+           action: nil, //#selector(AppDelegate.preferences),
            keyEquivalent: ""
         )
+        
+        let pitem = menu.item(withTitle: "Preferences...")
+        pitem?.view = viewController.view
 
         menu.addItem( NSMenuItem.separator() )
 
@@ -97,13 +103,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         NSApplication.shared.terminate(self)
     }
     
-    @objc func preferences() {
-        let prefWindow = prefController.window
-        let application = NSApplication.shared
-        application.runModal(for: prefWindow!)
-        prefWindow?.close()
-        application.stopModal()
-    }
+//    @objc func preferences() {
+//        let prefWindow = prefController.window
+//        let application = NSApplication.shared
+//        application.runModal(for: prefWindow!)
+//        prefWindow?.close()
+//        application.stopModal()
+//    }
     
     @objc func check() {
         showPowerNotification(info: getPowerStatus(), forced: true)
