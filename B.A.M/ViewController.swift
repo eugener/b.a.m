@@ -10,6 +10,19 @@ import Cocoa
 
 class ViewController: NSViewController {
 
+    @IBOutlet weak var slMaxBatteryCapacity: NSSlider!
+    @IBOutlet weak var lbMaxBatteryCapacity: NSTextField!
+    
+    var maxBatteryCapacity: Int {
+        get {
+            return slMaxBatteryCapacity.integerValue
+        }
+        set {
+            slMaxBatteryCapacity.integerValue = newValue
+            lbMaxBatteryCapacity.stringValue = String(newValue)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

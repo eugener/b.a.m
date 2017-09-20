@@ -14,18 +14,24 @@ import IOKit.ps
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate  {
 
-    var item : NSStatusItem? = nil
+    lazy var item : NSStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
+    lazy var storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle:nil)
+    lazy var prefController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "Preferences")) as! NSWindowController
+    lazy var viewController = prefController.contentViewController as! ViewController
+    
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         // Insert code here to initialize your application
+        
+        viewController.maxBatteryCapacity = 51
 
         // allow for notifications to show even if your app is visible/top
         NSUserNotificationCenter.default.delegate = self
         
         //setup status bar and menu
-        item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        item?.title = "B.A.M"
+        item.title = "B.A.M"
         
         let menu = NSMenu()
         menu.addItem(
@@ -46,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
            action: #selector(AppDelegate.quit),
            keyEquivalent: ""
         )
-        item?.menu = menu
+        item.menu = menu
         
         
         // configure test timer
@@ -91,8 +97,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     }
     
     @objc func preferences() {
-        let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle:nil)
-        let prefController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "Preferences")) as! NSWindowController
         let prefWindow = prefController.window
         let application = NSApplication.shared
         application.runModal(for: prefWindow!)
@@ -104,11 +108,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         showPowerNotification(info: getPowerStatus(), forced: true)
     }
 
-    private let minPowerCapacity = 25
+    //private let minPowerCapacity = 25
     
     func showPowerNotification(info: PowerStatus, forced: Bool) {
         
-        if ( info.capacity <= minPowerCapacity && !info.charging ) {
+        print( "Checking for max capacity of \(viewController.maxBatteryCapacity)")
+        
+        if ( info.capacity <= viewController.maxBatteryCapacity && !info.charging ) {
             scheduleLocalNotification(
                 title: "B.A.M",
                 subtitle: "Your power is critical: \(info.capacity)%",
