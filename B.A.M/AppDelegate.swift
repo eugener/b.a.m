@@ -25,7 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         // Insert code here to initialize your application
         
-        let capacity: Int = UserDefaults.standard.integer(forKey: "maxBatteryCapacity")
+        let capacity: Int = Config.maxBatteryCapacity
+            //UserDefaults.standard.integer(forKey: "maxBatteryCapacity")
         //print("Loaded: \(capacity)")
         viewController.maxBatteryCapacity = (capacity == 0) ? 25: capacity
 

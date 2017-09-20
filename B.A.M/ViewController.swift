@@ -16,7 +16,8 @@ class ViewController: NSViewController {
     @IBAction func sliderValueChanged(_ sender: Any) {
         let value = slMaxBatteryCapacity.integerValue
         lbMaxBatteryCapacity.stringValue = String(value)
-        UserDefaults.standard.set(value, forKey: "maxBatteryCapacity")
+        //UserDefaults.standard.set(value, forKey: "maxBatteryCapacity")
+        Config.maxBatteryCapacity = value
     }
     
     var maxBatteryCapacity: Int {
