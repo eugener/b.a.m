@@ -13,19 +13,26 @@ class ViewController: NSViewController {
     @IBOutlet weak var slMaxBatteryCapacity: NSSlider!
     @IBOutlet weak var lbMaxBatteryCapacity: NSTextField!
     
+    @IBAction func sliderValueChanged(_ sender: Any) {
+        let value = slMaxBatteryCapacity.integerValue
+        lbMaxBatteryCapacity.stringValue = String(value)
+        UserDefaults.standard.set(value, forKey: "maxBatteryCapacity")
+    }
+    
     var maxBatteryCapacity: Int {
         get {
             return slMaxBatteryCapacity.integerValue
         }
         set {
             slMaxBatteryCapacity.integerValue = newValue
-            lbMaxBatteryCapacity.stringValue = String(newValue)
+            sliderValueChanged(self)
         }
     }
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 

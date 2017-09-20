@@ -739,7 +739,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <sliderCell key="cell" continuous="YES" alignment="left" maxValue="100" doubleValue="25" tickMarkPosition="below" numberOfTickMarks="20" sliderType="linear" id="L3e-Vc-LaV"/>
                                 <connections>
-                                    <action selector="takeIntValueFrom:" target="h92-I8-79G" id="aas-rU-qPd"/>
+                                    <action selector="sliderValueChanged:" target="XfG-lQ-9wD" id="SvF-FT-dYh"/>
                                 </connections>
                             </slider>
                         </subviews>

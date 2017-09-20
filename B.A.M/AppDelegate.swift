@@ -25,7 +25,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         // Insert code here to initialize your application
         
-        viewController.maxBatteryCapacity = 51
+        let capacity: Int = UserDefaults.standard.integer(forKey: "maxBatteryCapacity")
+        //print("Loaded: \(capacity)")
+        viewController.maxBatteryCapacity = (capacity == 0) ? 25: capacity
 
         // allow for notifications to show even if your app is visible/top
         NSUserNotificationCenter.default.delegate = self
