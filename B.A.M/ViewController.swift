@@ -23,8 +23,7 @@ class ViewController: NSViewController {
     }
     
     override func viewDidDisappear() {
-        let application = NSApplication.shared()
-        application.stopModal()
+        NSApplication.shared.stopModal()
     }
 
 

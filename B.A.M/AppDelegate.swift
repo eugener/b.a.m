@@ -24,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         NSUserNotificationCenter.default.delegate = self
         
         //setup status bar and menu
-        item = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+        item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         item?.title = "B.A.M"
         
         let menu = NSMenu()
@@ -69,7 +69,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         return true
     }
     
-    func checkStatus() {
+    @objc func checkStatus() {
         showPowerNotification(info: getPowerStatus(), forced: false)
     }
     
@@ -86,21 +86,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         NSUserNotificationCenter.default.deliver(notification)
     }
     
-    func quit() {
-        NSApplication.shared().terminate(self)
+    @objc func quit() {
+        NSApplication.shared.terminate(self)
     }
     
-    func preferences() {
-        let storyboard = NSStoryboard(name: "Main", bundle:nil)
-        let prefController = storyboard.instantiateController(withIdentifier: "Preferences") as! NSWindowController
+    @objc func preferences() {
+        let storyboard = NSStoryboard(name: NSStoryboard.Name(rawValue: "Main"), bundle:nil)
+        let prefController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "Preferences")) as! NSWindowController
         let prefWindow = prefController.window
-        let application = NSApplication.shared()
+        let application = NSApplication.shared
         application.runModal(for: prefWindow!)
         prefWindow?.close()
         application.stopModal()
     }
     
-    func check() {
+    @objc func check() {
         showPowerNotification(info: getPowerStatus(), forced: true)
     }
 
