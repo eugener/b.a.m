@@ -13,15 +13,17 @@ struct Config {
     private static let sMaxBatteryCapacity = "maxBatteryCapacity"
     private static let defaultMaxBatteryCapacity: Int = 25
     
+    private static let userDefaults = UserDefaults.standard
+    
     private init() { }
     
     static var maxBatteryCapacity: Int {
         get {
-            let capacity = UserDefaults.standard.integer(forKey: sMaxBatteryCapacity)
+            let capacity = userDefaults.integer(forKey: sMaxBatteryCapacity)
             return (capacity == 0) ? defaultMaxBatteryCapacity: capacity
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: sMaxBatteryCapacity)
+            userDefaults.set(newValue, forKey: sMaxBatteryCapacity)
         }
     }
 }
